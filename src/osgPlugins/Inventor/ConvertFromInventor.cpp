@@ -1,3 +1,5 @@
+#define NDEBUG 1
+
 #include "ConvertFromInventor.h"
 
 #include "PendulumCallback.h"

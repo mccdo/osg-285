@@ -30,6 +30,7 @@
 #include <stack>
 #include <osg/CullFace>
 #include <osg/FrontFace>
+#define NDEBUG 1
 
 class SoSeparator;
 

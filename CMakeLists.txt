@@ -658,6 +658,15 @@ ENDIF(BUILD_OSG_EXAMPLES)
 # Set defaults for Universal Binaries. We want 32-bit Intel/PPC on 10.4
 # and 32/64-bit Intel/PPC on >= 10.5. Anything <= 10.3 doesn't support.
 IF(APPLE)
+    set(XCODE_ATTRIBUTE_SDKROOT macosx)
+    execute_process(COMMAND xcodebuild -version -sdk "${XCODE_ATTRIBUTE_SDKROOT}" Path | head -n 1 OUTPUT_VARIABLE CMAKE_OSX_SYSROOT)
+    string(REGEX REPLACE "(\r?\n)+$" "" CMAKE_OSX_SYSROOT "${CMAKE_OSX_SYSROOT}")
+
+    # Determine the canonical name of the selected Platform SDK
+    EXECUTE_PROCESS(COMMAND "defaults" "read" "${CMAKE_OSX_SYSROOT}/SDKSettings.plist" "CanonicalName" 
+        OUTPUT_VARIABLE APPLE_PLATFORM_SDK_CANONICAL_NAME
+        OUTPUT_STRIP_TRAILING_WHITESPACE)
+
     # These are just defaults/recommendations, but how we want to build
     # out of the box. But the user needs to be able to change these options.
     # So we must only set the values the first time CMake is run, or we
@@ -669,23 +678,31 @@ IF(APPLE)
         # version information we need. (Darwin versions can be changed
         # independently of OS X versions.)
         # It does look like CMake handles the CMAKE_OSX_SYSROOT automatically.
-        IF(EXISTS /Developer/SDKs/MacOSX10.5.sdk)
+        IF(${APPLE_PLATFORM_SDK_CANONICAL_NAME} STREQUAL "macosx10.8")
+            SET(OSG_DEFAULT_IMAGE_PLUGIN_FOR_OSX "imageio" CACHE STRING "Forced imageio default image plugin for OSX" FORCE)
+            # 64 Bit Works, PPC is not supported any more
+            SET(CMAKE_OSX_ARCHITECTURES "i386;x86_64" CACHE STRING "Build architectures for OSX" FORCE)
+            SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.8 -fvisibility-inlines-hidden" CACHE STRING "Flags used by the compiler during all build types." FORCE)
+        ELSEIF(${APPLE_PLATFORM_SDK_CANONICAL_NAME} STREQUAL "macosx10.7")
+            SET(OSG_DEFAULT_IMAGE_PLUGIN_FOR_OSX "imageio" CACHE STRING "Forced imageio default image plugin for OSX" FORCE)
+            # 64 Bit Works, PPC is not supported any more
+            SET(CMAKE_OSX_ARCHITECTURES "i386;x86_64" CACHE STRING "Build architectures for OSX" FORCE)
+            SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.7 -fvisibility-inlines-hidden" CACHE STRING "Flags used by the compiler during all build types." FORCE)
+        ELSEIF(${APPLE_PLATFORM_SDK_CANONICAL_NAME} STREQUAL "macosx10.6" OR ${APPLE_PLATFORM_SDK_CANONICAL_NAME} STREQUAL "macosx10.5")
             # 64-bit compiles are not supported with Carbon. We should enable 
             # 64-bit compilation by default once osgviewer has been 
             # rewritten with Cocoa.
             #SET(CMAKE_OSX_ARCHITECTURES "ppc;i386;ppc64;x86_64" CACHE STRING "Build architectures for OSX" FORCE)
             SET(CMAKE_OSX_ARCHITECTURES "ppc;i386" CACHE STRING "Build architectures for OSX" FORCE)
             SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.5 -ftree-vectorize -fvisibility-inlines-hidden" CACHE STRING "Flags used by the compiler during all build types." FORCE)
-        ELSE(EXISTS /Developer/SDKs/MacOSX10.5.sdk)
-            IF(EXISTS /Developer/SDKs/MacOSX10.4u.sdk)
-                SET(CMAKE_OSX_ARCHITECTURES "ppc;i386" CACHE STRING "Build architectures for OSX" FORCE)
-                SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.4 -ftree-vectorize -fvisibility-inlines-hidden" CACHE STRING "Flags used by the compiler during all build types." FORCE)
-            ELSE(EXISTS /Developer/SDKs/MacOSX10.4u.sdk)
-                # No Universal Binary support
-                # Should break down further to set the -mmacosx-version-min,
-                # but the SDK detection is too unreliable here.
-            ENDIF(EXISTS /Developer/SDKs/MacOSX10.4u.sdk)
-        ENDIF(EXISTS /Developer/SDKs/MacOSX10.5.sdk)
+        ELSEIF(${APPLE_PLATFORM_SDK_CANONICAL_NAME} STREQUAL "macosx10.4")
+            SET(CMAKE_OSX_ARCHITECTURES "ppc;i386" CACHE STRING "Build architectures for OSX" FORCE)
+            SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.4 -ftree-vectorize -fvisibility-inlines-hidden" CACHE STRING "Flags used by the compiler during all build types." FORCE)
+        ELSE(EXISTS /Developer/SDKs/MacOSX10.4u.sdk)
+            # No Universal Binary support
+            # Should break down further to set the -mmacosx-version-min,
+            # but the SDK detection is too unreliable here.
+        ENDIF()
     ENDIF(NOT OSG_CONFIG_HAS_BEEN_RUN_BEFORE)
 
     OPTION(OSG_BUILD_APPLICATION_BUNDLES "Enable the building of applications and examples as OSX Bundles" OFF)

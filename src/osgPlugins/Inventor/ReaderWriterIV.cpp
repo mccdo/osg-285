@@ -2,7 +2,7 @@
 #include <osg/Notify>
 #include <osgDB/FileUtils>
 #include <osgDB/FileNameUtils>
-
+#define NDEBUG 1
 // Inventor headers
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInteraction.h>

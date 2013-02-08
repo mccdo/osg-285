@@ -1,6 +1,6 @@
 #ifndef _CONVERTFROMINVENTOR_H_
 #define _CONVERTFROMINVENTOR_H_
-
+#define NDEBUG 1
 #include <osg/Group>
 #include <osg/Geometry>
 #include <osg/PrimitiveSet>

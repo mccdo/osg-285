@@ -42,6 +42,10 @@
 #include <osg/ShapeDrawable>
 #include <osg/TexEnv>
 #include <osg/TexGen>
+//#ifdef __COIN__
+#define NDEBUG 1
+//#endif
+
 #include <Inventor/nodes/SoBaseColor.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoCoordinate4.h>
