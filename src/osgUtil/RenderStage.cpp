@@ -222,6 +222,8 @@ void RenderStage::runCameraSetUp(osg::RenderInfo& renderInfo)
     
     osg::State& state = *renderInfo.getState();
 
+    state.checkGLErrors("start of runCameraSetUp()");
+
     osg::Camera::RenderTargetImplementation renderTargetImplementation = _camera->getRenderTargetImplementation();
     osg::Camera::RenderTargetImplementation renderTargetFallback = _camera->getRenderTargetFallback();
 
@@ -733,6 +735,7 @@ void RenderStage::runCameraSetUp(osg::RenderInfo& renderInfo)
         }
     }
 
+    state.checkGLErrors("end of runCameraSetUp()");
 }
 
 void RenderStage::copyTexture(osg::RenderInfo& renderInfo)

@@ -61,6 +61,9 @@ void GLObjectsVisitor::apply(osg::Geode& node)
             }
         }
     }
+
+    if( _renderInfo.getState() )
+        _renderInfo.getState()->checkGLErrors("end of apply(Geode&)");
 }
 
 void GLObjectsVisitor::apply(osg::Drawable& drawable)
@@ -98,6 +101,9 @@ void GLObjectsVisitor::apply(osg::Drawable& drawable)
     {
         drawable.setUseVertexBufferObjects(false);
     }
+
+    if( _renderInfo.getState() )
+        _renderInfo.getState()->checkGLErrors("end of apply(Drawable&)");
 }
 
 void GLObjectsVisitor::apply(osg::StateSet& stateset)
@@ -143,6 +149,8 @@ void GLObjectsVisitor::apply(osg::StateSet& stateset)
             _renderInfo.getState()->setLastAppliedProgramObject(0);
         }
         
+        if( _renderInfo.getState() )
+            _renderInfo.getState()->checkGLErrors("end of COMPILE_STATE_ATTRIBUTES");
     }
 
     if (_mode & RELEASE_STATE_ATTRIBUTES)
