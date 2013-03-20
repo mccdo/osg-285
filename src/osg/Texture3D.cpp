@@ -314,6 +314,9 @@ void Texture3D::apply(State& state) const
     {
         generateMipmap(state);
     }
+
+    if( state.getCheckForGLErrors() == State::ONCE_PER_ATTRIBUTE )
+        state.checkGLErrors("end of Texture3D::apply()");
 }
 
 void Texture3D::computeInternalFormat() const

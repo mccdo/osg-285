@@ -479,6 +479,8 @@ void Drawable::compileGLObjects(RenderInfo& renderInfo) const
 
     glEndList();
 
+    if( renderInfo.getState()->getCheckForGLErrors() == State::ONCE_PER_ATTRIBUTE )
+        renderInfo.getState()->checkGLErrors("end of Drawable::compileGLObjects()");
 }
 
 void Drawable::setThreadSafeRefUnref(bool threadSafe)

@@ -169,6 +169,9 @@ void Program::compileGLObjects( osg::State& state ) const
     }
 
     getPCP( contextID )->linkProgram();
+
+    if( state.getCheckForGLErrors() == State::ONCE_PER_ATTRIBUTE )
+        state.checkGLErrors("end of Program::compileGLObjects()");
 }
 
 void Program::setThreadSafeRefUnref(bool threadSafe)

@@ -277,12 +277,17 @@ void Renderer::compile()
     osgUtil::SceneView* sceneView = _sceneView[0].get();
     if (!sceneView || _done) return;
 
+    sceneView->getState()->checkGLErrors("start of Renderer::compile()");
+
     if (sceneView->getSceneData()) 
     {
         osgUtil::GLObjectsVisitor glov;
         glov.setState(sceneView->getState());
         sceneView->getSceneData()->accept(glov);
     }
+
+    sceneView->getState()->checkGLErrors("end of Renderer::compile()");
+    DEBUG_MESSAGE<<"Renderer::compile() end"<<std::endl;
 }
 
 void Renderer::cull()
