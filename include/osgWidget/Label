@@ -17,6 +17,7 @@
 #define OSGWIDGET_LABEL
 
 #include <osgText/Text>
+#include <osgText/String>
 #include <osgWidget/Widget>
 #include <osgWidget/Window>
 
@@ -36,6 +37,7 @@ class OSGWIDGET_EXPORT Label: public Widget
         virtual void positioned ();
 
         void setLabel     (const std::string&);
+        void setLabel     (const osgText::String&);
         void setFont      (const std::string&);
         void setFontSize  (unsigned int);
         void setFontColor (const Color&);

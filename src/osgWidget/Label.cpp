@@ -108,6 +108,12 @@ void Label::setLabel(const std::string& label) {
     _calculateSize(getTextSize());
 }
 
+void Label::setLabel(const osgText::String& label) {
+    _text->setText(label);
+
+    _calculateSize(getTextSize());
+}
+
 void Label::setFont(const std::string& font) {
     _text->setFont(font);
     
