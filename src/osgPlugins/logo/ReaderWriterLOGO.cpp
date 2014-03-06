@@ -121,13 +121,13 @@ class Logos: public osg::Drawable
             }
 
             float place[][4] = {
-                { vw*0.5, ((vh*0.5) + th*0.5), -0.5, -1.0 },
+                { vw*0.5f, ((vh*0.5f) + th*0.5f), -0.5, -1.0 },
                 { vx, vh, 0.0, -1.0 },
                 { vw, vh, -1.0, -1.0 },
                 { vx, vy, 0.0, 1.0 },
                 { vw, vy, -1.0, 1.0 },
-                { vw*0.5, vh , -0.5, -1.0 },
-                { vw*0.5, 0.0 , -0.5, 1.0 },
+                { vw*0.5f, vh , -0.5, -1.0 },
+                { vw*0.5f, 0.0 , -0.5, 1.0 },
             };
 
             for( int i = Center; i < last_position; i++ )

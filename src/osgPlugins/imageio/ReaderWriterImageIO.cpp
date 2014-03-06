@@ -252,7 +252,7 @@ osg::Image* CreateOSGImageFromCGImage(CGImageRef image_ref)
 
     size_t the_width = CGImageGetWidth(image_ref);
     size_t the_height = CGImageGetHeight(image_ref);
-    CGRect the_rect = {{0, 0}, {the_width, the_height}};
+    CGRect the_rect = {{0, 0}, {CGFloat(the_width), CGFloat(the_height)}};
 
     size_t bits_per_pixel = CGImageGetBitsPerPixel(image_ref);
     size_t bytes_per_row = CGImageGetBytesPerRow(image_ref);
