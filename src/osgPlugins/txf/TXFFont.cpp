@@ -13,6 +13,7 @@
 
 #include "TXFFont.h"
 #include <iostream>
+#include <algorithm>
 #include <osg/Notify>
 
 #define FNT_BYTE_FORMAT         0
@@ -153,7 +154,7 @@ TXFFont::loadFont(std::istream& stream)
 
     unsigned w = texwidth;
     unsigned h = texheight;
-    
+
     osgText::FontResolution fontResolution(maxheight, maxheight);
 
     std::vector<GlyphData> glyphs;
@@ -275,7 +276,7 @@ TXFFont::loadFont(std::istream& stream)
 
     unsigned width = 1;
     unsigned height = 1;
-    
+
     glyph->allocateImage(width, height, 1, GL_ALPHA, GL_UNSIGNED_BYTE);
     glyph->setInternalTextureFormat(GL_ALPHA);
 
